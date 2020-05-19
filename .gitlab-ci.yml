@@ -156,3 +156,12 @@ stages:
         - docker tag "$CI_REGISTRY_IMAGE:$TAG-$CI_PIPELINE_ID" "$CI_REGISTRY_IMAGE:$TAG"
         # Push to the GitLab Docker registry
         - docker push "$CI_REGISTRY_IMAGE:$TAG"
+
+build:
+    extends: .build
+
+test:
+    extends: .test
+
+deploy:
+    extends: .deploy

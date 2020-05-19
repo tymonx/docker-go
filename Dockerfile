@@ -17,9 +17,10 @@ ARG GO_VERSION=1.14.3
 ARG GO_BASE_IMAGE=
 ARG GO_DOCKER_NAME=golang
 ARG GO_DOCKER_TAG=${GO_VERSION}${GO_BASE_IMAGE:+-}${GO_BASE_IMAGE}
+
 FROM ${GO_DOCKER_NAME}:${GO_DOCKER_TAG} as base
 
-# Install packages
+# Download, install and build packages
 FROM base as builder
 
 ARG GOLANGCI_LINT_VERSION=v1.27.0
@@ -67,26 +68,6 @@ RUN \
 # Build image
 FROM base
 
-ARG BUILD_DATE
-ARG VCS_REF
-ARG VERSION
-
-# Build-time metadata as defined at http://label-schema.org
-LABEL \
-    maintainer="tymoteusz.blazejczyk@tymonx.com" \
-    org.label-schema.schema-version="1.0" \
-    org.label-schema.build-date=$BUILD_DATE \
-    org.label-schema.name="tymonx/docker-go" \
-    org.label-schema.description="A Docker image with preinstalled tools for formatting, linting, testing and documenting Go projects" \
-    org.label-schema.usage="https://gitlab.com/tymonx/docker-go/README.md" \
-    org.label-schema.url="https://gitlab.com/tymonx/docker-go" \
-    org.label-schema.vcs-url="https://gitlab.com/tymonx/docker-go" \
-    org.label-schema.vcs-ref=$VCS_REF \
-    org.label-schema.vendor="tymonx" \
-    org.label-schema.version=$VERSION \
-    org.label-schema.docker.cmd=\
-"docker run --rm --user $(id -u):$(id -g) --volume $(pwd):$(pwd) --workdir $(pwd) --entrypoint /bin/bash registry.gitlab.com/tymonx/docker-go"
-
 ENV \
     GOCACHE=/tmp/.cache/go-build \
     GOLANGCI_LINT_CACHE=/tmp/.cache/golangci-lint
@@ -100,6 +81,7 @@ RUN \
             git \
             curl \
             wget \
+            bash \
             colordiff \
             bsdmainutils \
             && \

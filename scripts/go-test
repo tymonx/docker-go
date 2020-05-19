@@ -1,0 +1,175 @@
+#!/usr/bin/env bash
+#
+# Copyright 2020 Tymoteusz Blazejczyk
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Exit on error
+set -eo pipefail
+
+function color_cyan {
+    # Print text with cyan color
+    echo -e "\e[1;36m$1\e[0m"
+}
+
+function color_yellow {
+    # Print text with yellow color
+    echo -e "\e[1;33m$1\e[0m"
+}
+
+function color_green {
+    # Print text with green color
+    echo -e "\e[1;32m$1\e[0m"
+}
+
+function color_red {
+    # Print text with red color
+    echo -e "\e[1;31m$1\e[0m"
+}
+
+function command_exists {
+    # Check if provided command exists
+    command -v "$1" 2>&1 >/dev/null
+}
+
+function extract_coverage {
+    # Extract coverage percentages value %
+    sed -n -E 's/^.*\s+([0-9]+\.[0-9]+)%.*$/\1/p' | grep . || echo "0.0"
+}
+
+function test_coverage {
+    # Test coverage
+    test 0 -eq $(echo "${1:-0} < ${2:-80}" | bc)
+}
+
+function color_coverage {
+    local COVERAGE
+    local THRESHOLD
+
+    THRESHOLD="${1:-80}"
+
+    while IFS= read -r line; do
+        # Capture coverage value
+        COVERAGE=$(echo "$line" | extract_coverage)
+
+        # Testing coverage
+        if test_coverage "$COVERAGE" "$THRESHOLD"; then
+            # Coverage passed
+            color_green "$line"
+        else
+            # Coverage failed
+            color_red "$line"
+        fi
+    done
+}
+
+function go_test_run {
+    # Go test run
+    local ARGUMENTS
+    local JUNIT_FILE
+    local COVERAGE_FILE
+
+    ARGUMENTS=${@:-./...}
+    JUNIT_FILE="${DIR:-.}/junit.xml"
+    COVERAGE_FILE="${DIR:-.}/coverage.out"
+
+    mkdir -p "${DIR:-.}"
+
+    go test -v -cover -covermode=${GO_COVERAGE_MODE:-set} -coverprofile=$COVERAGE_FILE $ARGUMENTS | \
+        tee >(RICHGO_FORCE_COLOR=1 richgo testfilter > /dev/stderr) | \
+        go-junit-report > "$JUNIT_FILE"
+}
+
+function go_test_coverage {
+    # Go test coverage
+    local COVERAGE
+    local COVERAGE_FILE
+    local COBERTURA_FILE
+
+    mkdir -p "${DIR:-.}"
+
+    COVERAGE_FILE="${1:-${DIR:-.}/coverage.out}"
+    COBERTURA_FILE="${DIR:-.}/cobertura.xml"
+
+    echo "Generating HTML coverage report..."
+
+    go tool cover -o "${DIR:-.}/coverage.html" -html=$COVERAGE_FILE
+
+    echo "Generated HTML coverage report"
+
+    color_cyan "Showing coverage results:"
+    # Showing coverage results and capture total coverage result
+    COVERAGE=$(go tool cover -func <(cat $COVERAGE_FILE | tee >(gocover-cobertura > $COBERTURA_FILE)) | \
+        color_coverage "${GO_COVERAGE:-80}" | column -t | tee /dev/stderr | grep -E '\s*total:\s+\(statements\)\s+' | \
+        extract_coverage)
+
+    color_cyan "Coverage result: $(printf '%8.1f' $COVERAGE)%"
+    color_cyan "Coverage threshold: $(printf '%5.1f' ${GO_COVERAGE:-80})%"
+
+    if test_coverage "$COVERAGE" "${GO_COVERAGE:-80}"; then
+        color_green "Go coverage passed"
+    else
+        color_red "Go coverage failed"
+        return 1
+    fi
+
+    return 0
+}
+
+function go_test {
+    local ARGUMENTS
+    local FAILED
+    local DIR
+
+    ARGUMENTS=${@:-./...}
+    FAILED=0
+    DIR=$(mktemp -d -t go-test-XXXXXXXXXX)
+
+    if ! command_exists column; then
+        color_red "The column tool is not installed"
+        exit 1
+    fi
+
+    if ! command_exists richgo; then
+        color_red "The richgo tool is not installed"
+        exit 1
+    fi
+
+    if ! command_exists gocover-cobertura; then
+        color_red "The gocover-cobertura tool is not installed"
+        exit 1
+    fi
+
+    if ! command_exists go-junit-report; then
+        color_red "The go-junit-report tool is not installed"
+        exit 1
+    fi
+
+    if ! go_test_run $ARGUMENTS; then
+        FAILED=1
+    fi
+
+    if ! go_test_coverage; then
+        FAILED=1
+    fi
+
+    color_cyan "All generated output files are under: $DIR"
+    echo " * HTML coverage report: $DIR/coverage.html"
+    echo " * Text coverage report: $DIR/coverage.out"
+    echo " * Cobertura report:     $DIR/cobertura.xml"
+    echo " * JUnit report:         $DIR/junit.xml"
+
+    return $FAILED
+}
+
+go_test $@

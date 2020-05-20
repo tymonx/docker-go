@@ -24,13 +24,7 @@ test:
 deploy:
     extends: .deploy
 
-latest:
-    extends: .latest
-
-edge:
-    extends: .edge
-
-docker-hub-deploy:
+deploy-docker-hub:
     extends: .deploy
     variables:
         DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
@@ -38,7 +32,10 @@ docker-hub-deploy:
         DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
         DOCKER_PUSH_REGISTRY: $DOCKER_HUB_REGISTRY
 
-docker-hub-latest:
+latest:
+    extends: .latest
+
+latest-docker-hub:
     extends: .latest
     variables:
         DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
@@ -46,7 +43,10 @@ docker-hub-latest:
         DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
         DOCKER_PUSH_REGISTRY: $DOCKER_HUB_REGISTRY
 
-docker-hub-edge:
+edge:
+    extends: .edge
+
+edge-docker-hub:
     extends: .edge
     variables:
         DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
@@ -90,6 +90,16 @@ deploy-stretch:
         GO_BASE_IMAGE: stretch
         DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
 
+deploy-stretch-docker-hub:
+    extends: .deploy
+    variables:
+        GO_BASE_IMAGE: stretch
+        DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
+        DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
+        DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN
+        DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
+        DOCKER_PUSH_REGISTRY: $DOCKER_HUB_REGISTRY
+
 build-alpine:
     extends: .build
     variables:
@@ -108,6 +118,16 @@ deploy-alpine:
         GO_BASE_IMAGE: alpine
         DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
 
+deploy-alpine-docker-hub:
+    extends: .deploy
+    variables:
+        GO_BASE_IMAGE: alpine
+        DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
+        DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
+        DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN
+        DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
+        DOCKER_PUSH_REGISTRY: $DOCKER_HUB_REGISTRY
+
 build-alpine-3.11:
     extends: .build
     variables:
@@ -125,3 +145,13 @@ deploy-alpine-3.11:
     variables:
         GO_BASE_IMAGE: alpine3.11
         DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
+
+deploy-alpine-3.11-docker-hub:
+    extends: .deploy
+    variables:
+        GO_BASE_IMAGE: alpine3.11
+        DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
+        DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
+        DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN
+        DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
+        DOCKER_PUSH_REGISTRY: $DOCKER_HUB_REGISTRY

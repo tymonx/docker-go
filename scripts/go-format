@@ -52,7 +52,7 @@ function go_format {
     if command_exists goimports; then
         local OUTPUT
 
-        OUTPUT=$(goimports -l $ARGUMENTS)
+        OUTPUT=$(goimports -l $ARGUMENTS || true)
 
         if [[ -n "$OUTPUT" ]]; then
             color_yellow "Go imports are not formatted correctly"
@@ -72,7 +72,7 @@ function go_format {
     if command_exists gofmt; then
         local OUTPUT
 
-        OUTPUT=$(gofmt -l $ARGUMENTS)
+        OUTPUT=$(gofmt -l $ARGUMENTS || true)
 
         if [[ -n "$OUTPUT" ]]; then
             color_yellow "Go source files are not formatted correctly"

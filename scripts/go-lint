@@ -60,7 +60,7 @@ function go_lint {
             exit 1
         fi
 
-        OUTPUT=$(goimports -l $FORMAT_ARGUMENTS)
+        OUTPUT=$(goimports -l $FORMAT_ARGUMENTS || true)
 
         if [[ -n "$OUTPUT" ]]; then
             color_red "Go imports are not formatted correctly"
@@ -85,7 +85,7 @@ function go_lint {
             exit 1
         fi
 
-        OUTPUT=$(gofmt -l $FORMAT_ARGUMENTS)
+        OUTPUT=$(gofmt -l $FORMAT_ARGUMENTS || true)
 
         if [[ -n "$OUTPUT" ]]; then
             color_red "Go source files are not formatted correctly"

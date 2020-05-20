@@ -97,12 +97,16 @@ include:
         GO_VERSION: 1.14.3
         GO_BASE_IMAGE: ""
         DOCKER_IMAGE_TAG: $GO_VERSION
+    only:
+        - tags
 
 .latest:
     extends: .docker-latest
     variables:
         GO_VERSION: 1.14.3
         GO_BASE_IMAGE: ""
+    only:
+        - tags
 
 .edge:
     extends: .docker-edge
@@ -110,8 +114,5 @@ include:
         GO_VERSION: 1.14.3
         GO_BASE_IMAGE: ""
     only:
-        refs:
-            - $CI_DEFAULT_BRANCH
-        variables:
-            - $CI_COMMIT_TAG
-            - $CI_COMMIT_BRANCH
+        - tags
+        - $CI_DEFAULT_BRANCH

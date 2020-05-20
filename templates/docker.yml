@@ -109,3 +109,9 @@ include:
     variables:
         GO_VERSION: 1.14.3
         GO_BASE_IMAGE: ""
+    only:
+        refs:
+            - $CI_DEFAULT_BRANCH
+        variables:
+            - $CI_COMMIT_TAG
+            - $CI_COMMIT_BRANCH

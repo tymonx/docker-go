@@ -36,7 +36,7 @@ docker-hub-deploy:
         DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
         DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN
         DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
-        DOCKER_PUSH_REGISTRY: "https://index.docker.io/v1/"
+        DOCKER_PUSH_REGISTRY: $DOCKER_HUB_REGISTRY
 
 docker-hub-latest:
     extends: .latest
@@ -44,7 +44,7 @@ docker-hub-latest:
         DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
         DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN
         DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
-        DOCKER_PUSH_REGISTRY: "https://index.docker.io/v1/"
+        DOCKER_PUSH_REGISTRY: $DOCKER_HUB_REGISTRY
 
 docker-hub-edge:
     extends: .edge
@@ -52,7 +52,7 @@ docker-hub-edge:
         DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
         DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN
         DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
-        DOCKER_PUSH_REGISTRY: "https://index.docker.io/v1/"
+        DOCKER_PUSH_REGISTRY: $DOCKER_HUB_REGISTRY
 
 build-buster:
     extends: .build

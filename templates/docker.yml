@@ -14,7 +14,7 @@
 
 include:
     - project: 'tymonx/gitlab-ci'
-      ref: v0.59.0
+      ref: v0.60.0
       file: '/templates/generic/docker.yml'
 
 .create-go-module: &create-go-module |-

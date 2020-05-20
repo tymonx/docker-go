@@ -30,6 +30,27 @@ latest:
 edge:
     extends: .edge
 
+docker-hub-deploy:
+    extends: .deploy
+    variables:
+        DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
+        DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN
+        DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
+
+docker-hub-latest:
+    extends: .latest
+    variables:
+        DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
+        DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN
+        DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
+
+docker-hub-edge:
+    extends: .edge
+    variables:
+        DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
+        DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN
+        DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
+
 build-buster:
     extends: .build
     variables:

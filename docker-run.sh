@@ -14,10 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# First capture all command line arguments to a separate variable.
+# This will allow to preserve command invocation from unwanted behavior
 DOCKER_ARGUMENTS=$@
 
+# Create a temporary directory for all downloaded Go modules. To have
+# the correct file mode permissions with proper user and group,
+# this directory must be created before running the docker run command
+# with the --volume argument. Otherwise, docker will create directory
+# for us with directory properties from container. Mostly of time it is
+# unwanted root:root
 mkdir -p /tmp/go/
 
+# Run Docker image as container. Mount current working directory to container.
+# This will allow all commands from Docker to have access to files and
+# directories under current working directory, mostly of time it is a project
+# workspace. All created files and directories will have proper mode file
+# permissions from current user who invokes this script
 docker run \
     --rm \
     --tty \

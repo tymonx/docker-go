@@ -103,9 +103,11 @@ include:
     variables:
         GO_VERSION: 1.14.3
         GO_BASE_IMAGE: ""
+        DOCKER_IMAGE_TAG: $GO_VERSION
 
 .edge:
     extends: .docker-edge
     variables:
         GO_VERSION: 1.14.3
         GO_BASE_IMAGE: ""
+        DOCKER_IMAGE_TAG: $GO_VERSION

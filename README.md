@@ -6,6 +6,7 @@ testing and documenting Go projects.
 # Features
 
 * Pre-installed required tools for developing, formatting, linting, testing and documenting Go projects
+* Pre-installed the `mockgen` tool for generating mocks for testing
 * Formatting and validating Go source files imports with the `goimports` tool
 * Formatting and validating Go source files format with the `gofmt` tool
 * Validating Go source files errors with the `errcheck` tool
@@ -15,7 +16,7 @@ testing and documenting Go projects.
 * Generating Go coverage result, text and HTML reports
 * Generating JUnit test XML report for GitLab Merge Requests
 * Generating Cobertura coverage XML report for GitLab Merge Requests
-* Validating Go coverage value threshold
+* Validating Go coverage value threshold with colorization
 * Colorizing Go imports and format validation with the `colordiff` tool
 * Colorizing Go tests with the `richgo` tool
 * Colorizing Go coverage results and format nicely with the `column` tool

@@ -30,5 +30,5 @@ docker run \
     --volume "/etc/passwd:/etc/passwd:ro" \
     --workdir "$(pwd)" \
     --entrypoint /bin/bash \
-    test \
+    "registry.gitlab.com/tymonx/docker-go:1.14.3" \
     ${DOCKER_ARGUMENTS:+-c "$DOCKER_ARGUMENTS"}

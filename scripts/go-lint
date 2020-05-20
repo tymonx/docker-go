@@ -104,8 +104,18 @@ function go_lint {
     # Go source files linting with the revive tool
     if command_exists revive; then
         local OUTPUT
+        local OPTIONS
 
-        if ! revive -formatter friendly $ARGUMENTS; then
+        OPTIONS="-formatter friendly"
+
+        if [[ -f "./revive.toml" ]]; then
+            OPTIONS="$OPTIONS -config ./revive.toml"
+
+        elif [[ -f "/usr/local/go/revive.toml" ]]; then
+            OPTIONS="$OPTIONS -config /usr/local/go/revive.toml"
+        fi
+
+        if ! revive $OPTIONS $ARGUMENTS; then
             FAILED=1
         fi
     else
@@ -115,8 +125,18 @@ function go_lint {
     # Go source files linting with the golangci-lint tool
     if command_exists golangci-lint; then
         local OUTPUT
+        local OPTIONS
 
-        if ! golangci-lint run $ARGUMENTS; then
+        OPTIONS=""
+
+        if [[ -f "./.golangci.yml" ]]; then
+            OPTIONS="$OPTIONS --config ./.golangci.yml"
+
+        elif [[ -f "/usr/local/go/.golangci.yml" ]]; then
+            OPTIONS="$OPTIONS --config /usr/local/go/.golangci.yml"
+        fi
+
+        if ! golangci-lint run $OPTIONS $ARGUMENTS; then
             FAILED=1
         fi
     else

@@ -102,4 +102,4 @@ RUN \
 
 COPY --from=builder /go/bin /usr/local/go/bin/
 COPY scripts /usr/local/bin/
-COPY configs /root/
+COPY configs /usr/local/go/

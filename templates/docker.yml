@@ -14,7 +14,7 @@
 
 include:
     - project: 'tymonx/gitlab-ci'
-      ref: v0.57.0
+      ref: v0.58.0
       file: '/templates/generic/docker.yml'
 
 .create-go-module: &create-go-module |-
@@ -97,26 +97,15 @@ include:
         GO_VERSION: 1.14.3
         GO_BASE_IMAGE: ""
         DOCKER_IMAGE_TAG: $GO_VERSION
-    only:
-        - tags
 
 .latest:
     extends: .docker-latest
     variables:
         GO_VERSION: 1.14.3
         GO_BASE_IMAGE: ""
-    only:
-        - tags
 
 .edge:
     extends: .docker-edge
     variables:
         GO_VERSION: 1.14.3
         GO_BASE_IMAGE: ""
-    only:
-        refs:
-            - tags
-            - branches
-        variables:
-            - $CI_COMMIT_TAG
-            - $CI_DEFAULT_BRANCH == $CI_COMMIT_BRANCH

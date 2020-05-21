@@ -113,6 +113,7 @@ function go_test_coverage {
         color_coverage "${GO_COVERAGE:-80}" | column -t | tee /dev/stderr | grep -E '\s*total:\s+\(statements\)\s+' | \
         extract_coverage)
 
+    echo "coverage: $(printf '%.1f' $COVERAGE)% of statements"
     color_cyan "Coverage result: $(printf '%8.1f' $COVERAGE)%"
     color_cyan "Coverage threshold: $(printf '%5.1f' ${GO_COVERAGE:-80})%"
 

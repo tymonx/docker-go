@@ -70,7 +70,8 @@ FROM base
 
 ENV \
     GOCACHE=/tmp/.cache/go-build \
-    GOLANGCI_LINT_CACHE=/tmp/.cache/golangci-lint
+    GOLANGCI_LINT_CACHE=/tmp/.cache/golangci-lint \
+    GOROOT=/usr/local/go
 
 RUN \
     if command -v apt-get 2>&1 >/dev/null; then \

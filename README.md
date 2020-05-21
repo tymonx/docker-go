@@ -22,6 +22,10 @@ building, testing and documenting Go projects.
 *   Colorizing Go coverage results and format nicely with the `column` tool
 *   Generating static HTML coverage report with the `go tool cover` tool
 
+## Example
+
+![Example](assets/images/example.png "Example")
+
 ## Usage
 
 Download the `docker-run.sh` helper script:

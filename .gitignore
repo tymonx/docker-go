@@ -31,6 +31,9 @@
 # Don't ignore scripts
 !scripts/go-*
 
+# Don't ignore assets
+!assets/**
+
 # Don't ignore project files
 !LICENSE
 !.gitignore

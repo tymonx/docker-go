@@ -27,49 +27,49 @@ testing and documenting Go projects.
 Download the `docker-run.sh` helper script:
 
 ```plaintext
-    wget -O docker-run.sh https://gitlab.com/tymonx/docker-go/-/raw/master/docker-run.sh
+wget -O docker-run.sh https://gitlab.com/tymonx/docker-go/-/raw/master/docker-run.sh
 ```
 
 Make it executable:
 
 ```plaintext
-    chmod a+x ./docker-run.sh
+chmod a+x ./docker-run.sh
 ```
 
 Run the `docker-run.sh` script without any arguments to work in Docker container:
 
 ```plaintext
-    ./docker-run.sh
+./docker-run.sh
 ```
 
 Or pass arguments to the `docker-run.sh` script to execute commands inside Docker container:
 
 ```plaintext
-    ./docker-run.sh go build ./...
+./docker-run.sh go build ./...
 ```
 
 Use the `go-format` command to automatically reformat Go source files:
 
 ```plaintext
-    ./docker-run.sh go-format
+./docker-run.sh go-format
 ```
 
 Use the `go-lint` command to run various Go linters on Go source files with enabled colorization:
 
 ```plaintext
-    ./docker-run.sh go-lint
+./docker-run.sh go-lint
 ```
 
 Use the `go-build` command to build Go source files. Equivalent to the `go build ./...` execution:
 
 ```plaintext
-    ./docker-run.sh go-build
+./docker-run.sh go-build
 ```
 
 Use the `go-test` command to run tests and validate coverage result with enabled colorization:
 
 ```plaintext
-    ./docker-run.sh go-test
+./docker-run.sh go-test
 ```
 
 All commands accept standard Go paths as additional arguments like `./`, `./...`, `<package-name>` and so on.

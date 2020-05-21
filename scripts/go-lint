@@ -108,8 +108,11 @@ function go_lint {
 
         OPTIONS="-formatter friendly"
 
-        if [[ -f "./revive.toml" ]]; then
-            OPTIONS="$OPTIONS -config ./revive.toml"
+        if [[ -f "revive.toml" ]]; then
+            OPTIONS="$OPTIONS -config revive.toml"
+
+        elif [[ -f ".revive.toml" ]]; then
+            OPTIONS="$OPTIONS -config .revive.toml"
 
         elif [[ -f "/usr/local/go/revive.toml" ]]; then
             OPTIONS="$OPTIONS -config /usr/local/go/revive.toml"
@@ -127,10 +130,10 @@ function go_lint {
         local OUTPUT
         local OPTIONS
 
-        OPTIONS=""
+        OPTIONS="--color always"
 
-        if [[ -f "./.golangci.yml" ]]; then
-            OPTIONS="$OPTIONS --config ./.golangci.yml"
+        if [[ -f ".golangci.yml" ]]; then
+            OPTIONS="$OPTIONS --config .golangci.yml"
 
         elif [[ -f "/usr/local/go/.golangci.yml" ]]; then
             OPTIONS="$OPTIONS --config /usr/local/go/.golangci.yml"

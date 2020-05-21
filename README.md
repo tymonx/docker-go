@@ -1,11 +1,11 @@
 # Docker Go
 
 A Docker image with preinstalled tools for developing, formatting, linting,
-testing and documenting Go projects.
+building, testing and documenting Go projects.
 
 ## Features
 
-*   Pre-installed required tools for developing, formatting, linting, testing and documenting Go projects
+*   Pre-installed required tools for developing, formatting, linting, building, testing and documenting Go projects
 *   Pre-installed the `mockgen` tool for generating mocks for testing
 *   Formatting and validating Go source files imports with the `goimports` tool
 *   Formatting and validating Go source files format with the `gofmt` tool

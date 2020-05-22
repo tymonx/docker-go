@@ -129,10 +129,12 @@ function go_test_coverage {
 
 function go_test {
     local ARGUMENTS
+    local TEST_FAILED
     local FAILED
     local DIR
 
     ARGUMENTS=${@:-./...}
+    TEST_FAILED=0
     FAILED=0
     DIR=$(mktemp -d -t go-test-XXXXXXXXXX)
 
@@ -157,11 +159,18 @@ function go_test {
     fi
 
     if ! go_test_run $ARGUMENTS; then
+        TEST_FAILED=1
         FAILED=1
     fi
 
     if ! go_test_coverage; then
         FAILED=1
+    fi
+
+    if [[ $TEST_FAILED -eq 0 ]]; then
+        color_green "Go tests passed"
+    else
+        color_red "Go tests failed"
     fi
 
     color_cyan "All generated output files are under: $DIR"

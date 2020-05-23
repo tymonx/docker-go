@@ -47,9 +47,15 @@ function go_lint {
     local ARGUMENTS
     local FAILED
 
-    FAILED=0
+    # First capture all command line arguments to a separate variable.
+    # This will allow to preserve command invocation from unwanted behavior
     ARGUMENTS=${@:-./...}
+
+    # Transform substrings from ... to standard .
     FORMAT_ARGUMENTS=$(echo "$ARGUMENTS" | sed 's/\.\.\././')
+
+    # Initialize failed variable
+    FAILED=0
 
     # Validating Go imports
     if command_exists goimports; then

@@ -1,11 +1,11 @@
 # Docker Go
 
-A Docker image with preinstalled tools for developing, formatting, linting,
+A Docker image with preinstalled tools for developing, mocking, formatting, linting,
 building, testing and documenting Go projects.
 
 ## Features
 
-*   Pre-installed required tools for developing, formatting, linting, building, testing and documenting Go projects
+*   Pre-installed required tools for developing, mocking, formatting, linting, building, testing and documenting Go projects
 *   Pre-installed the `mockgen` tool for generating mocks for testing
 *   Formatting and validating Go source files imports with the `goimports` tool
 *   Formatting and validating Go source files format with the `gofmt` tool
@@ -52,6 +52,12 @@ Or pass arguments to the `docker-run.sh` script to execute commands inside Docke
 ./docker-run.sh go build ./...
 ```
 
+Use the `go-mock` command to create mocks for all automatically detected Go interfaces:
+
+```plaintext
+./docker-run.sh go-mock
+```
+
 Use the `go-format` command to automatically reformat Go source files:
 
 ```plaintext
@@ -76,4 +82,10 @@ Use the `go-test` command to run tests and validate coverage result with enabled
 ./docker-run.sh go-test
 ```
 
-All commands accept standard Go paths as additional arguments like `./`, `./...`, `<package-name>` and so on.
+Use the `go-doc` command to run Go source code documentation server for your project on default `localhost:6060`:
+
+```plaintext
+./docker-run.sh go-doc
+```
+
+All commands accept standard Go paths as additional arguments like `./`, `./...`, `./<path>` and so on.

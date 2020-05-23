@@ -86,6 +86,7 @@ include:
     script:
         - *create-go-module
         - *create-go-test
+        - go-mock
         - go-format
         - go-lint
         - go-build

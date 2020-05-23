@@ -96,6 +96,7 @@ RUN \
             curl \
             wget \
             bash \
+            coreutils \
             colordiff \
             util-linux \
             libc-dev; \

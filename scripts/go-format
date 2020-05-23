@@ -45,7 +45,11 @@ function command_exists {
 function go_format {
     local ARGUMENTS
 
+    # First capture all command line arguments to a separate variable.
+    # This will allow to preserve command invocation from unwanted behavior
     ARGUMENTS=${@:-./.}
+
+    # Transform substrings from ... to standard .
     ARGUMENTS=$(echo "$ARGUMENTS" | sed 's/\.\.\././')
 
     # Go imports formatting

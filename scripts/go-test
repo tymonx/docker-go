@@ -133,9 +133,15 @@ function go_test {
     local FAILED
     local DIR
 
+    # First capture all command line arguments to a separate variable.
+    # This will allow to preserve command invocation from unwanted behavior
     ARGUMENTS=${@:-./...}
+
+    # Initialize failed variables
     TEST_FAILED=0
     FAILED=0
+
+    # Create temporary directory for all generated outputs
     DIR=$(mktemp -d -t go-test-XXXXXXXXXX)
 
     if ! command_exists column; then

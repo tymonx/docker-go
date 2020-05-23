@@ -42,6 +42,7 @@ docker run \
     --volume "/etc/group:/etc/group:ro" \
     --volume "/etc/passwd:/etc/passwd:ro" \
     --workdir "$(pwd)" \
+    --publish "${GODOC_PORT:-6060}:6060" \
     --entrypoint /bin/bash \
     "registry.gitlab.com/tymonx/docker-go:1.14.3" \
     ${DOCKER_ARGUMENTS:+-c "$DOCKER_ARGUMENTS"}

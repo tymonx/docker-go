@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Exit on error
+set -eo pipefail
+
 # First capture all command line arguments to a separate variable.
 # This will allow to preserve command invocation from unwanted behavior
 DOCKER_ARGUMENTS=$@

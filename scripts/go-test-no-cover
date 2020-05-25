@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+#
+# Copyright 2020 Tymoteusz Blazejczyk
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Exit on error
+set -eo pipefail
+
+function color_green {
+    # Print text with green color
+    echo -e "\e[1;32m$1\e[0m"
+}
+
+function color_red {
+    # Print text with red color
+    echo -e "\e[1;31m$1\e[0m"
+}
+
+function command_exists {
+    # Check if provided command exists
+    command -v "$1" 2>&1 >/dev/null
+}
+
+function go_test_no_cover {
+    local ARGUMENTS
+    local FAILED
+
+    # First capture all command line arguments to a separate variable.
+    # This will allow to preserve command invocation from unwanted behavior
+    ARGUMENTS=${@:-./...}
+
+    # Initialize failed variables
+    FAILED=0
+
+    if ! command_exists richgo; then
+        color_red "The richgo tool is not installed"
+        exit 1
+    fi
+
+    if RICHGO_FORCE_COLOR=1 richgo test -v $ARGUMENTS; then
+        color_green "Go tests passed"
+    else
+        color_red "Go tests failed"
+        FAILED=1
+    fi
+
+    return $FAILED
+}
+
+go_test_no_cover $@

@@ -82,6 +82,18 @@ Use the `go-test` command to run tests and validate coverage result with enabled
 ./docker-run.sh go-test
 ```
 
+Use the `go-test-no-cover` command to run tests without coverage:
+
+```plaintext
+./docker-run.sh go-test-no-cover
+```
+
+To run only a single test:
+
+```plaintext
+./docker-run.sh go-test -run <TestName> ./...
+```
+
 Use the `go-doc` command to run Go source code documentation server for your project on default `localhost:6060`:
 
 ```plaintext

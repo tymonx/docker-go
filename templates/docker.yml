@@ -92,6 +92,8 @@ include:
         - go-build
         - go-test
         - go-test-no-cover
+        - go-test -run MyFunc ./...
+        - go-test-no-cover -run MyFunc ./...
 
 .deploy:
     extends: .docker-deploy

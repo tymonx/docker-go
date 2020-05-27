@@ -70,8 +70,10 @@ Use the `go-lint` command to run various Go linters on Go source files with enab
 ./docker-run.sh go-lint
 ```
 
-:exclamation: Notice :exclamation: To fix Go source code formatting errors from Go linter tools, use
-the `./docker-run.sh go-format` script for that.
+:exclamation: Notice :exclamation:
+
+To fix Go source code formatting errors from Go linter tools,
+use the `./docker-run.sh go-format` script for that.
 
 Use the `go-build` command to build Go source files. Equivalent to the `go build ./...` execution:
 
@@ -109,8 +111,9 @@ Use the `go-doc` command to run Go source code documentation server for your pro
 ./docker-run.sh go-doc
 ```
 
-:exclamation: Notice :exclamation: It can take some time before server will
-process all source code files for browsing. Wait several seconds more and
-refresh your web browser.
+:exclamation: Notice :exclamation:
+
+It can take some time before server will process all source code files for browsing.
+Wait several seconds more and refresh your web browser.
 
 All commands accept standard Go paths as additional arguments like `./`, `./...`, `./<path>` and so on.

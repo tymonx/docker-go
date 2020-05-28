@@ -22,6 +22,11 @@ function color_cyan {
     echo -e "\e[1;36m$1\e[0m"
 }
 
+function color_yellow {
+    # Print text with yellow color
+    echo -e "\e[1;33m$1\e[0m"
+}
+
 function color_green {
     # Print text with green color
     echo -e "\e[1;32m$1\e[0m"
@@ -32,25 +37,70 @@ function color_red {
     echo -e "\e[1;31m$1\e[0m"
 }
 
+function command_exists {
+    # Check if provided command exists
+    command -v "$1" 2>&1 >/dev/null
+}
+
+function get_module_name {
+    # Get module name
+    sed -n -E 's/^\s*module\s+([[:graph:]]+)\s*$/\1/p'
+}
+
+function stop_service {
+    # Stop service
+    kill -TERM "$1" 2>&1 >/dev/null || true
+}
+
 function go_doc {
+    local IP_ADDRESS
     local ARGUMENTS
     local FAILED
+    local MODULE
+    local FILE
+    local PID
 
     # First capture all command line arguments to a separate variable.
     # This will allow to preserve command invocation from unwanted behavior
     ARGUMENTS=$@
 
-    # Initialize failed variable
+    # Initialize variables
+    MODULE=""
     FAILED=0
 
-    color_cyan "Running Go documentation server at $(hostname -i):6060..."
-
-    if godoc -http ":6060" $ARGUMENTS; then
-        color_green "Go documentation server stopped"
-    else
-        color_red "Go documentation server failed"
-        FAILED=1
+    if ! command_exists curl; then
+        color_red "The curl tool is not installed"
+        return 1
     fi
+
+    color_cyan "Processing Go source files for documentation. Please wait..."
+
+    # Get primary IP address
+    IP_ADDRESS=$(ip route get 1 | sed -n -E 's/^.*src\s+([0-9.]+).*$/\1/p')
+
+    # Get go.mod file
+    FILE="$(go env GOMOD)"
+
+    if [[ -f "$FILE" ]]; then
+        # Get module name
+        MODULE="$(cat "$FILE" | get_module_name)/"
+    fi
+
+    godoc -http ":6060" $ARGUMENTS &
+    PID="$!"
+
+    trap "stop_service $PID" EXIT TERM QUIT HUP INT
+
+    # Waiting for godoc server
+    while ! curl --fail --silent "localhost:6060/pkg/$MODULE" 2>&1 >/dev/null; do
+        sleep 0.1
+    done
+
+    color_cyan "Go documentation is ready for browsing at ${IP_ADDRESS}:6060/pkg/$MODULE"
+
+    wait "$PID" || true
+
+    color_yellow "Go documentation server stopped"
 
     return $FAILED
 }

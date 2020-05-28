@@ -85,6 +85,8 @@ function go_test_run {
 
     mkdir -p "${DIR:-.}"
 
+    color_cyan "Running Go tests..."
+
     go test -v -cover -covermode=${GO_COVERAGE_MODE:-set} -coverprofile=$COVERAGE_FILE $ARGUMENTS | \
         tee >(RICHGO_FORCE_COLOR=1 richgo testfilter > /dev/stderr) | \
         go-junit-report > "$JUNIT_FILE"

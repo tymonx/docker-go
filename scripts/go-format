@@ -56,6 +56,8 @@ function go_format {
     if command_exists goimports; then
         local OUTPUT
 
+        color_cyan "Running the goimports formatter..."
+
         OUTPUT=$(goimports -l $ARGUMENTS || true)
 
         if [[ -n "$OUTPUT" ]]; then
@@ -67,6 +69,8 @@ function go_format {
             color_cyan "Reformatting files..."
             goimports -w $ARGUMENTS
             color_green "All files reformatted"
+        else
+            color_green "All files formatted correctly"
         fi
     else
         color_red "The goimports tool is not installed"
@@ -75,6 +79,8 @@ function go_format {
     # Go source files formatting
     if command_exists gofmt; then
         local OUTPUT
+
+        color_cyan "Running the gofmt formatter..."
 
         OUTPUT=$(gofmt -l $ARGUMENTS || true)
 
@@ -87,6 +93,8 @@ function go_format {
             color_cyan "Reformatting files..."
             gofmt -w $ARGUMENTS
             color_green "All files reformatted"
+        else
+            color_green "All files formatted correctly"
         fi
     else
         color_red "The gofmt tool is not installed"

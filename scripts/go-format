@@ -60,7 +60,9 @@ function go_format {
 
         OUTPUT=$(goimports -l $ARGUMENTS || true)
 
-        if [[ -n "$OUTPUT" ]]; then
+        if [[ -z "$OUTPUT" ]]; then
+            color_green "All files formatted correctly"
+        else
             color_yellow "Go imports are not formatted correctly"
 
             color_cyan "Listing all ill-formatted files:"
@@ -69,8 +71,6 @@ function go_format {
             color_cyan "Reformatting files..."
             goimports -w $ARGUMENTS
             color_green "All files reformatted"
-        else
-            color_green "All files formatted correctly"
         fi
     else
         color_red "The goimports tool is not installed"
@@ -84,7 +84,9 @@ function go_format {
 
         OUTPUT=$(gofmt -l $ARGUMENTS || true)
 
-        if [[ -n "$OUTPUT" ]]; then
+        if [[ -z "$OUTPUT" ]]; then
+            color_green "All files formatted correctly"
+        else
             color_yellow "Go source files are not formatted correctly"
 
             color_cyan "Listing all ill-formatted files:"
@@ -93,8 +95,6 @@ function go_format {
             color_cyan "Reformatting files..."
             gofmt -w $ARGUMENTS
             color_green "All files reformatted"
-        else
-            color_green "All files formatted correctly"
         fi
     else
         color_red "The gofmt tool is not installed"

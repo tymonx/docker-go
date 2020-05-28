@@ -17,6 +17,16 @@
 # Exit on error
 set -eo pipefail
 
+function color_cyan {
+    # Print text with cyan color
+    echo -e "\e[1;36m$1\e[0m"
+}
+
+function color_green {
+    # Print text with green color
+    echo -e "\e[1;32m$1\e[0m"
+}
+
 function color_red {
     # Print text with red color
     echo -e "\e[1;31m$1\e[0m"
@@ -33,8 +43,12 @@ function go_doc {
     # Initialize failed variable
     FAILED=0
 
-    if ! godoc -http ":6060" $ARGUMENTS; then
-        color_red "Godoc failed"
+    color_cyan "Running Go documentation server at $(hostname -i):6060..."
+
+    if godoc -http ":6060" $ARGUMENTS; then
+        color_green "Go documentation server stopped"
+    else
+        color_red "Go documentation server failed"
         FAILED=1
     fi
 

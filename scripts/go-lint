@@ -70,7 +70,9 @@ function go_lint {
 
         OUTPUT=$(goimports -l $FORMAT_ARGUMENTS || true)
 
-        if [[ -n "$OUTPUT" ]]; then
+        if [[ -z "$OUTPUT" ]]; then
+            color_green "The goimports linter passed"
+        else
             color_red "Go imports are not formatted correctly"
 
             color_cyan "Listing all ill-formatted files:"
@@ -80,8 +82,6 @@ function go_lint {
             goimports -d -e $FORMAT_ARGUMENTS | colordiff
             color_red "The goimports linter failed"
             FAILED=1
-        else
-            color_green "The goimports linter passed"
         fi
     else
         color_red "The goimports tool is not installed"
@@ -100,7 +100,9 @@ function go_lint {
 
         OUTPUT=$(gofmt -l $FORMAT_ARGUMENTS || true)
 
-        if [[ -n "$OUTPUT" ]]; then
+        if [[ -z "$OUTPUT" ]]; then
+            color_green "The gofmt linter passed"
+        else
             color_red "Go source files are not formatted correctly"
 
             color_cyan "Listing all ill-formatted files:"
@@ -110,8 +112,6 @@ function go_lint {
             gofmt -d -e $FORMAT_ARGUMENTS | colordiff
             color_red "The gofmt linter failed"
             FAILED=1
-        else
-            color_green "The gofmt linter passed"
         fi
     else
         color_red "The gofmt tool is not installed"
@@ -136,11 +136,11 @@ function go_lint {
 
         color_cyan "Running the revive linter..."
 
-        if ! revive $OPTIONS $ARGUMENTS; then
+        if revive $OPTIONS $ARGUMENTS; then
+            color_green "The revive linter passed"
+        else
             color_red "The revive linter failed"
             FAILED=1
-        else
-            color_green "The revive linter passed"
         fi
     else
         color_red "The revive tool is not installed"
@@ -162,14 +162,30 @@ function go_lint {
 
         color_cyan "Running the golangci-lint linter..."
 
-        if ! golangci-lint run $OPTIONS $ARGUMENTS; then
+        if golangci-lint run $OPTIONS $ARGUMENTS; then
+            color_green "The golangci-lint linter passed"
+        else
             color_red "The golangci-lint linter failed"
             FAILED=1
-        else
-            color_green "The golangci-lint linter passed"
         fi
     else
         color_red "The golangci-lint tool is not installed"
+    fi
+
+    # Go source files linting with the golint tool
+    if command_exists golint; then
+        local OUTPUT
+
+        color_cyan "Running the golint linter..."
+
+        if golint $ARGUMENTS; then
+            color_green "The golint linter passed"
+        else
+            color_red "The golint linter failed"
+            FAILED=1
+        fi
+    else
+        color_red "The golint tool is not installed"
     fi
 
     # Go source files linting with the errcheck tool
@@ -185,11 +201,11 @@ function go_lint {
 
         color_cyan "Running the errcheck linter..."
 
-        if ! errcheck $OPTIONS $ARGUMENTS; then
+        if errcheck $OPTIONS $ARGUMENTS; then
+            color_green "The errcheck linter passed"
+        else
             color_red "The errcheck linter failed"
             FAILED=1
-        else
-            color_green "The errcheck linter passed"
         fi
     else
         color_red "The errcheck tool is not installed"

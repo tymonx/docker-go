@@ -17,6 +17,16 @@
 # Exit on error
 set -eo pipefail
 
+function color_cyan {
+    # Print text with cyan color
+    echo -e "\e[1;36m$1\e[0m"
+}
+
+function color_green {
+    # Print text with green color
+    echo -e "\e[1;32m$1\e[0m"
+}
+
 function color_red {
     # Print text with red color
     echo -e "\e[1;31m$1\e[0m"
@@ -33,8 +43,12 @@ function go_build {
     # Initialize failed variable
     FAILED=0
 
-    if ! go build $ARGUMENTS; then
-        color_red "Build failed for $ARGUMENTS"
+    color_cyan "Running Go builds...."
+
+    if go build $ARGUMENTS; then
+        color_green "Go builds passed"
+    else
+        color_red "Go builds failed"
         FAILED=1
     fi
 

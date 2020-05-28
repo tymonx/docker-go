@@ -17,6 +17,21 @@
 # Exit on error
 set -eo pipefail
 
+function color_cyan {
+    # Print text with cyan color
+    echo -e "\e[1;36m$1\e[0m"
+}
+
+function color_yellow {
+    # Print text with yellow color
+    echo -e "\e[1;33m$1\e[0m"
+}
+
+function color_green {
+    # Print text with green color
+    echo -e "\e[1;32m$1\e[0m"
+}
+
 function color_red {
     # Print text with red color
     echo -e "\e[1;31m$1\e[0m"
@@ -151,6 +166,7 @@ function create_mock_files {
 function go_mock {
     local ARGUMENTS
     local FAILED
+    local MOCKS
 
     # First capture all command line arguments to a separate variable.
     # This will allow to preserve command invocation from unwanted behavior
@@ -161,17 +177,24 @@ function go_mock {
 
     # Initialize failed variable
     FAILED=0
+    MOCKS=""
+
+    color_cyan "Generating mocks for Go interfaces..."
 
     # Iterate over all paths to create mock files
     for argument in $ARGUMENTS; do
-        if ! (list_source_files "$argument" | create_mock_files); then
+        if ! MOCKS="${MOCKS}$(list_source_files "$argument" | create_mock_files | tee /dev/stderr)"; then
             FAILED=1
         fi
     done
 
     # Print status
     if [[ $FAILED -ne 0 ]]; then
-        color_red "Mocking failed for $ARGUMENTS"
+        color_red "Mocking failed"
+    elif [[ -n "$MOCKS" ]]; then
+        color_green "Go mocks generated"
+    else
+        color_yellow "Warning: no Go interfaces found for mocking"
     fi
 
     return $FAILED

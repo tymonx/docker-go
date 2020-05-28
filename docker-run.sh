@@ -15,11 +15,7 @@
 # limitations under the License.
 
 # Exit on error
-set -eo pipefail
-
-# First capture all command line arguments to a separate variable.
-# This will allow to preserve command invocation from unwanted behavior
-DOCKER_ARGUMENTS=$@
+set -e
 
 # Create a temporary directory for all downloaded Go modules. To have
 # the correct file mode permissions with proper user and group,
@@ -48,4 +44,4 @@ docker run \
     --publish "${GODOC_PORT:-6060}:6060" \
     --entrypoint /bin/bash \
     "registry.gitlab.com/tymonx/docker-go:1.14.3" \
-    ${DOCKER_ARGUMENTS:+-c "$DOCKER_ARGUMENTS"}
+    ${@:+-c "$*"}

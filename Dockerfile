@@ -99,6 +99,7 @@ RUN \
             coreutils \
             colordiff \
             util-linux \
+            musl-dev \
             libc-dev; \
     fi
 

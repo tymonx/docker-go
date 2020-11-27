@@ -17,19 +17,17 @@
 # Exit on error
 set -eo pipefail
 
-git_config_check() {
-    grep -q "\[\s*url\s\+\"${1}\"\\s*]" "$HOME/.gitconfig"
-}
-
 git_config_set() {
-    touch "${HOME}/.gitconfig"
+    touch "${HOME}/.gitconfig" >/dev/null 2>&1 || true
 
     if command -v git >/dev/null 2>&1; then
-        if ! git config --global --get "url.${1}.insteadof" >/dev/null 2>&1; then
-            git config --global "url.${1}.insteadOf" "${2}"
-        fi
-    elif ! git_config_check "${1}"; then
-        printf '[url "%s"]\n\tinsteadOf = %s\n' "${1}" "${2}" >> "${HOME}/.gitconfig"
+        for config in "local" "global" "system"; do
+            if git config "--${config}" --list >/dev/null 2>&1; then
+                if ! git config "--${config}" --get "url.${1}.insteadof" >/dev/null 2>&1; then
+                    git config "--${config}" "url.${1}.insteadOf" "${2}"
+                fi
+            fi
+        done
     fi
 }
 

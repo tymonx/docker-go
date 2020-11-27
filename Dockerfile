@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Basic image
-ARG GO_VERSION=1.14.3
+ARG GO_VERSION=1.15.5
 ARG GO_BASE_IMAGE=
 ARG GO_DOCKER_NAME=golang
 ARG GO_DOCKER_TAG=${GO_VERSION}${GO_BASE_IMAGE:+-}${GO_BASE_IMAGE}
@@ -23,7 +23,7 @@ FROM ${GO_DOCKER_NAME}:${GO_DOCKER_TAG} as base
 # Download, install and build packages
 FROM base as builder
 
-ARG GOLANGCI_LINT_VERSION=v1.27.0
+ARG GOLANGCI_LINT_VERSION=v1.33.0
 ARG GOLANGCI_LINT_URL="https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh"
 
 RUN \
@@ -71,7 +71,9 @@ FROM base
 ENV \
     GOCACHE=/tmp/.cache/go-build \
     GOLANGCI_LINT_CACHE=/tmp/.cache/golangci-lint \
-    GOROOT=/usr/local/go
+    GOROOT=/usr/local/go \
+    GOPROXY=direct \
+    GOSUMDB=off
 
 RUN \
     if command -v apt-get 2>&1 >/dev/null; then \

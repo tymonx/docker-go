@@ -99,7 +99,7 @@ function go_doc {
         sleep 0.1
     done
 
-    color_cyan "Go documentation is ready for browsing at ${IP_ADDRESS}:6060/pkg/$MODULE"
+    color_cyan "Go documentation is ready for browsing at http://${IP_ADDRESS}:6060/pkg/$MODULE"
 
     wait "$PID" || true
 

@@ -15,11 +15,11 @@
 # limitations under the License.
 
 # Exit on error
-set -eo pipefail
+set -e
 
 # Get Go path to store downloaded Go package sources
 if [ -z "${GOPATH:-}" ]; then
-    if command -v go >/dev/null &2>1; then
+    if command -v go 2>&1 >/dev/null; then
         GOPATH="$(go env GOPATH)"
     fi
 fi

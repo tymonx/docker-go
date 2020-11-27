@@ -17,6 +17,9 @@
 # Exit on error
 set -eo pipefail
 
+# Get current directory location for this script in portable and safe way
+SCRIPT_DIR="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" >/dev/null 2>&1 && pwd -P)"
+
 function color_cyan {
     # Print text with cyan color
     echo -e "\e[1;36m$1\e[0m"
@@ -214,4 +217,5 @@ function go_lint {
     return $FAILED
 }
 
+"${SCRIPT_DIR}"/go-git
 go_lint $@

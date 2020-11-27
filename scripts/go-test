@@ -17,6 +17,9 @@
 # Exit on error
 set -eo pipefail
 
+# Get current directory location for this script in portable and safe way
+SCRIPT_DIR="$(cd -P -- "$(dirname -- "$(command -v -- "$0")")" >/dev/null 2>&1 && pwd -P)"
+
 function color_cyan {
     # Print text with cyan color
     echo -e "\e[1;36m$1\e[0m"
@@ -143,8 +146,14 @@ function go_test {
     TEST_FAILED=0
     FAILED=0
 
+    # Go test destination directory
+    DST="${TMPDIR:-/tmp}/go-test"
+
+    # Create tests directory
+    mkdir -p "${DST}"
+
     # Create temporary directory for all generated outputs
-    DIR=$(mktemp -d -t go-test-XXXXXXXXXX)
+    DIR=$(mktemp -d -t -p "${DST}" XXXXXXXXXX)
 
     if ! command_exists column; then
         color_red "The column tool is not installed"
@@ -181,13 +190,17 @@ function go_test {
         color_red "Go tests failed"
     fi
 
-    color_cyan "All generated output files are under: $DIR"
-    echo " * HTML coverage report: $DIR/coverage.html"
-    echo " * Text coverage report: $DIR/coverage.out"
-    echo " * Cobertura report:     $DIR/cobertura.xml"
-    echo " * JUnit report:         $DIR/junit.xml"
+    # Copy all generated files to generic destination
+    cp "${DIR}"/* "${DST}/"
+
+    color_cyan "All generated output files are under: file://${DIR}/"
+    echo " * HTML coverage report: file://${DST}/coverage.html file://${DIR}/coverage.html"
+    echo " * Text coverage report: file://${DST}/coverage.out  file://${DIR}/coverage.out"
+    echo " * Cobertura report:     file://${DST}/cobertura.xml file://${DIR}/cobertura.xml"
+    echo " * JUnit report:         file://${DST}/junit.xml     file://${DIR}/junit.xml"
 
     return $FAILED
 }
 
+"${SCRIPT_DIR}"/go-git
 go_test $@

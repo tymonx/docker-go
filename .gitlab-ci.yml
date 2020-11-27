@@ -81,34 +81,6 @@ deploy-buster:
         GO_BASE_IMAGE: buster
         DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
 
-build-stretch:
-    extends: .build
-    variables:
-        GO_BASE_IMAGE: stretch
-        DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
-
-test-stretch:
-    extends: .test
-    variables:
-        GO_BASE_IMAGE: stretch
-        DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
-
-deploy-stretch:
-    extends: .deploy
-    variables:
-        GO_BASE_IMAGE: stretch
-        DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
-
-deploy-stretch-docker-hub:
-    extends: .deploy
-    variables:
-        GO_BASE_IMAGE: stretch
-        DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
-        DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
-        DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN
-        DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
-        DOCKER_PUSH_REGISTRY: $DOCKER_HUB_REGISTRY
-
 build-alpine:
     extends: .build
     variables:
@@ -137,28 +109,28 @@ deploy-alpine-docker-hub:
         DOCKER_PUSH_USERNAME: $DOCKER_HUB_USERNAME
         DOCKER_PUSH_REGISTRY: $DOCKER_HUB_REGISTRY
 
-build-alpine-3.11:
+build-alpine-3.12:
     extends: .build
     variables:
-        GO_BASE_IMAGE: alpine3.11
+        GO_BASE_IMAGE: alpine3.12
         DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
 
-test-alpine-3.11:
+test-alpine-3.12:
     extends: .test
     variables:
-        GO_BASE_IMAGE: alpine3.11
+        GO_BASE_IMAGE: alpine3.12
         DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
 
-deploy-alpine-3.11:
+deploy-alpine-3.12:
     extends: .deploy
     variables:
-        GO_BASE_IMAGE: alpine3.11
+        GO_BASE_IMAGE: alpine3.12
         DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
 
-deploy-alpine-3.11-docker-hub:
+deploy-alpine-3.12-docker-hub:
     extends: .deploy
     variables:
-        GO_BASE_IMAGE: alpine3.11
+        GO_BASE_IMAGE: alpine3.12
         DOCKER_IMAGE_TAG: $GO_VERSION-$GO_BASE_IMAGE
         DOCKER_PUSH_IMAGE: $DOCKER_HUB_USERNAME/go
         DOCKER_PUSH_PASSWORD: $DOCKER_HUB_TOKEN

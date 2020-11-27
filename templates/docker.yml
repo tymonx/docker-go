@@ -70,7 +70,7 @@ include:
 .build:
     extends: .docker-build
     variables:
-        GO_VERSION: 1.14.3
+        GO_VERSION: 1.15.5
         GO_BASE_IMAGE: ""
         DOCKER_IMAGE_TAG: $GO_VERSION
         DOCKER_BUILD_ARGS: |-
@@ -80,7 +80,7 @@ include:
 .test:
     extends: .docker-test
     variables:
-        GO_VERSION: 1.14.3
+        GO_VERSION: 1.15.5
         GO_BASE_IMAGE: ""
         DOCKER_IMAGE_TAG: $GO_VERSION
     script:
@@ -98,20 +98,20 @@ include:
 .deploy:
     extends: .docker-deploy
     variables:
-        GO_VERSION: 1.14.3
+        GO_VERSION: 1.15.5
         GO_BASE_IMAGE: ""
         DOCKER_IMAGE_TAG: $GO_VERSION
 
 .latest:
     extends: .docker-latest
     variables:
-        GO_VERSION: 1.14.3
+        GO_VERSION: 1.15.5
         GO_BASE_IMAGE: ""
         DOCKER_IMAGE_TAG: $GO_VERSION
 
 .edge:
     extends: .docker-edge
     variables:
-        GO_VERSION: 1.14.3
+        GO_VERSION: 1.15.5
         GO_BASE_IMAGE: ""
         DOCKER_IMAGE_TAG: $GO_VERSION

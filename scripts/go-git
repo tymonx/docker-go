@@ -22,10 +22,8 @@ git_config_set() {
 
     if command -v git >/dev/null 2>&1; then
         for config in "local" "global" "system"; do
-            if git config "--${config}" --list >/dev/null 2>&1; then
-                if ! git config "--${config}" --get "url.${1}.insteadof" >/dev/null 2>&1; then
-                    git config "--${config}" "url.${1}.insteadOf" "${2}"
-                fi
+            if ! git config "--${config}" --get "url.${1}.insteadof" >/dev/null 2>&1; then
+                git config "--${config}" "url.${1}.insteadOf" "${2}" >/dev/null 2>&1 || true
             fi
         done
     fi

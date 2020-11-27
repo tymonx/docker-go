@@ -50,5 +50,5 @@ docker run \
     --workdir "$(pwd)" \
     --publish "${GODOC_PORT:-6060}:6060" \
     --entrypoint /bin/bash \
-    "registry.gitlab.com/tymonx/docker-go:v1.15.5" \
+    "registry.gitlab.com/tymonx/docker-go:1.15.5" \
     ${@:+-c "$*"}

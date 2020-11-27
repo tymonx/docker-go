@@ -15,7 +15,14 @@
 # limitations under the License.
 
 # Exit on error
-set -e
+set -eo pipefail
+
+# Get Go path to store downloaded Go package sources
+if [ -z "${GOPATH:-}" ]; then
+    if command -v go >/dev/null &2>1; then
+        GOPATH="$(go env GOPATH)"
+    fi
+fi
 
 # Create a temporary directory for all downloaded Go modules. To have
 # the correct file mode permissions with proper user and group,
@@ -23,7 +30,7 @@ set -e
 # with the --volume argument. Otherwise, docker will create directory
 # for us with directory properties from container. Mostly of time it is
 # unwanted root:root
-mkdir -p /tmp/go/
+mkdir -p "${GOPATH:-/tmp/go}"
 
 # Run Docker image as container. Mount current working directory to container.
 # This will allow all commands from Docker to have access to files and
@@ -37,7 +44,7 @@ docker run \
     --user "$(id -u):$(id -g)" \
     --volume "$(pwd):$(pwd)" \
     --volume "/tmp/:/tmp/" \
-    --volume "/tmp/go/:/go/" \
+    --volume "${GOPATH:-/tmp/go}:/go/" \
     --volume "/etc/group:/etc/group:ro" \
     --volume "/etc/passwd:/etc/passwd:ro" \
     --workdir "$(pwd)" \

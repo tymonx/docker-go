@@ -194,10 +194,10 @@ function go_test {
     cp "${DIR}"/* "${DST}/"
 
     color_cyan "All generated output files are under: file://${DIR}/"
-    echo " * HTML coverage report: file://${DST}/coverage.html file://${DIR}/coverage.html"
-    echo " * Text coverage report: file://${DST}/coverage.out  file://${DIR}/coverage.out"
-    echo " * Cobertura report:     file://${DST}/cobertura.xml file://${DIR}/cobertura.xml"
-    echo " * JUnit report:         file://${DST}/junit.xml     file://${DIR}/junit.xml"
+    echo " * HTML coverage report: file://${DIR}/coverage.html file://${DST}/coverage.html"
+    echo " * Text coverage report: file://${DIR}/coverage.out  file://${DST}/coverage.out"
+    echo " * Cobertura report:     file://${DIR}/cobertura.xml file://${DST}/cobertura.xml"
+    echo " * JUnit report:         file://${DIR}/junit.xml     file://${DST}/junit.xml"
 
     return $FAILED
 }

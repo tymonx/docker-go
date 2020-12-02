@@ -103,6 +103,28 @@ function go_format {
         color_red "The gofmt tool is not installed"
     fi
 
+    # Go source file lines formatting
+    if command_exists golines; then
+        color_cyan "Running the golines formatter..."
+
+        OUTPUT="$(golines --max-len "${GO_LINE_LENGTH_LIMIT:-140}" --list-files ${ARGUMENTS} || true)"
+
+        if [ -z "${OUTPUT}" ]; then
+            color_green "All files formatted correctly"
+        else
+            color_yellow "Go source lines are not formatted correctly"
+
+            color_cyan "Listing all ill-formatted files:"
+            echo "${OUTPUT}"
+
+            color_cyan "Reformatting files..."
+            golines --max-len "${GO_LINE_LENGTH_LIMIT:-140}" --write-output ${ARGUMENTS}
+            color_green "All files reformatted"
+        fi
+    else
+        color_red "The golines tool is not installed"
+    fi
+
     return 0
 }
 

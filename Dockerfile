@@ -46,6 +46,8 @@ RUN \
     fi && \
     echo "Downloading, building and installing golangci-lint..." && \
     (curl -sSfL "$GOLANGCI_LINT_URL" | sh -s -- -b "$(go env GOPATH)/bin" "$GOLANGCI_LINT_VERSION") && \
+    echo "Downloading, building and installing golines..." && \
+    go get -u github.com/segmentio/golines && \
     echo "Downloading, building and installing errcheck..." && \
     go get -u github.com/kisielk/errcheck && \
     echo "Downloading, building and installing goimports..." && \

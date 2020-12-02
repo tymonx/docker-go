@@ -65,6 +65,11 @@ function create_comma_list {
     tr '\n' ',' | sed 's/,$//'
 }
 
+function format_go_source_file {
+    # Format Go source file
+    goimports | gofmt | golines --max-len "${GO_LINE_LENGTH_LIMIT:-140}"
+}
+
 function create_mock_file {
     # Create mock file
     local INTERFACES
@@ -136,15 +141,20 @@ function create_mock_file {
     # Output directory for mock files
     DIR="$DIR/mocks"
 
+    # Output mock file
+    OUTPUT="${DIR}/${FILE}"
+
     # Creating output directory for mock files
     mkdir -p "$DIR"
 
-    echo "Creating $DIR/$FILE mock file with $INTERFACES interfaces..."
+    echo "Creating ${OUTPUT} mock file with ${INTERFACES} interfaces..."
 
     # Create Go mock file using reflect mode and reformat it
-    if ! mockgen -package mocks "$PACKAGE" "$INTERFACES" | goimports | gofmt > "$DIR/$FILE"; then
-        color_red "Failed to create $DIR/$FILE mock file"
-        FAILED=1
+    if ! mockgen -package mocks "${PACKAGE}" "${INTERFACES}" 2>/dev/null | format_go_source_file > "${OUTPUT}"; then
+        if ! mockgen -package mocks -source "${INPUT}" | format_go_source_file > "${OUTPUT}"; then
+            color_red "Failed to create ${OUTPUT} mock file"
+            FAILED=1
+        fi
     fi
 
     return $FAILED

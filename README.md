@@ -9,6 +9,7 @@ building, testing and documenting Go projects.
 *   Pre-installed the `mockgen` tool for generating mocks for testing
 *   Formatting and validating Go source files imports with the `goimports` tool
 *   Formatting and validating Go source files format with the `gofmt` tool
+*   Formatting and validating Go source files line lengths with the `golines` tool
 *   Validating Go source files errors with the `errcheck` tool
 *   Linting Go source files with the `revive`, the `golangci-lint` and the `golint` tools
 *   Building Go source files

@@ -23,7 +23,7 @@ FROM ${GO_DOCKER_NAME}:${GO_DOCKER_TAG} as base
 # Download, install and build packages
 FROM base as builder
 
-ARG GOLANGCI_LINT_VERSION=v1.33.0
+ARG GOLANGCI_LINT_VERSION=v1.36.0
 ARG GOLANGCI_LINT_URL="https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh"
 
 RUN \
